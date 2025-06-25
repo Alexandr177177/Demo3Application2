@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ProgectServices {
+public class ProjectService {
     private  final ProjectRepository repository;
     private final ProjectMapper mapper;
 
