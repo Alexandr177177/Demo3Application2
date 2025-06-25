@@ -1,0 +1,109 @@
+
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5ebea; /* Коричнево-бежевый фон */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600vh;
+}
+
+.container {
+    text-align: center;
+    background-color: #d7bda9; /* Светло-коричневый фон */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 100px;
+
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.resume-item span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.create-btn,
+.update-btn,
+.delete-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.create-btn {
+    background-color: #ffcc99;
+    color: #333;
+}
+
+.update-btn {
+    background-color: #cccccc;
+    color: #333;
+}
+
+.delete-btn {
+    background-color: #ff6666;
+    color: #fff;
+}
+.action {
+    background-color: #ff6666;
+    color: #fff;
+}
+.create-btn:hover,
+.update-btn:hover,
+.delete-btn:hover {
+    opacity: 0.8;
+}
+
+.card {
+    border: none;
+    background-color: #fffdf7;
+}
+
+.form-check-input:checked {
+    background-color: #ff6666;
+    border-color: #ff6666;
+}
+.btn-outline-secondary {
+    background-color: transparent;
+    color: #5d3a00;
+    border: 2px solid #d7bda9;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+.btn-outline-secondary:hover {
+    background-color: #d7bda9;
+    color: #fff;
+}

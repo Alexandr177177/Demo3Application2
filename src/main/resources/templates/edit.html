@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать сотрудника</title>
+    <link rel="stylesheet" href="/css/style3.css"/>
+    <!-- Подключаем Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"  rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-sm p-4 mb-5 bg-white rounded">
+        <h1 class="text-center mb-4">Редактировать сотрудника</h1>
+
+        <!-- Форма редактирования -->
+        <form th:action="@{/resumes/{id}(id=${employee.id})}" method="post"
+              th:object="${employee}" enctype="multipart/form-data">
+            <input type="hidden" name="_method" value="put"/>
+            <input type="hidden" th:field="*{id}"/>
+            <!-- Отображение текущего фото -->
+            <div class="mb-3 text-center">
+                <label class="form-label"><strong>Текущее фото:</strong></label><br/>
+                <img th:if="${employee.image != null and employee.image != ''}"
+                     th:src="@{${employee.image}}"
+                     alt="Фото сотрудника"
+                     style="width: 150px; height: auto; border-radius: 10px;" /><br/>
+                <p th:if="${employee.image == null or employee.image == ''}" class="text-muted mt-2">
+                    Фото не загружено
+                </p>
+            </div>
+            <!-- Загрузка изображения -->
+            <div class="mb-3">
+                <label for="image" class="form-label">Загрузить изображение:</label>
+                <input type="file" id="image" class="form-control" name="imageFile"/>
+            </div>
+
+            <!-- URL изображения -->
+            <div class="mb-3">
+                <label for="imageUrl" class="form-label">URL изображения:</label>
+                <input type="text" id="imageUrl" class="form-control" th:field="*{image}" required/>
+            </div>
+
+            <!-- Имя -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Имя:</label>
+                <input type="text" id="name" class="form-control" th:field="*{name}" required/>
+            </div>
+
+            <!-- Телефон -->
+            <div class="mb-3">
+                <label for="telephone" class="form-label">Телефон:</label>
+                <input type="tel" id="telephone" class="form-control" th:field="*{telephon}" required/>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="mail" class="form-label">Email:</label>
+                <input type="email" id="mail" class="form-control" th:field="*{mail}" required/>
+            </div>
+
+            <!-- Уровень английского -->
+            <div class="mb-3">
+                <label for="english_level" class="form-label">Уровень английского:</label>
+                <select id="english_level" class="form-select" th:field="*{englishlevel}">
+                    <option th:each="level : ${englishLevelsList}"
+                            th:value="${level}"
+                            th:text="${level}"
+                            th:selected="${employee.englishlevel == level}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Навыки -->
+            <div class="mb-3">
+                <label>Навыки:</label>
+                <div class="row">
+                    <div class="col-md-3" th:each="skill : ${skillsList}">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                   th:id="'skill-' + ${skill}"
+                                   th:name="'skill'"
+                                   th:value="${skill}"
+                                   th:checked="${employee.skill != null and employee.skill.contains(skill)}"/>
+                            <label class="form-check-label" th:for="'skill-' + ${skill}" th:text="${skill}"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Образование -->
+            <div class="mb-3">
+                <label class="form-label"><strong>Образование</strong></label>
+                <div th:if="${employee.education} != null and ${employee.education.size()} > 0">
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            th:each="edu : ${employee.education}">
+                            <span>
+                                <strong th:text="${edu.yearStart + ' – ' + edu.yearEnd}"></strong>,<br/>
+                                <em th:text="${edu.nameEducation}"></em><br/>
+                                Диплом: <span th:text="${edu.degree}"></span>
+                            </span>
+                            <a th:href="@{/resumes/{id}/education/delete(id=${employee.id}, eduId=${edu.id})}">
+                               class="btn btn-danger btn-sm">Удалить</a>
+                        </li>
+                    </ul>
+                </div>
+                <p th:if="${employee.education} == null or ${employee.education.size()} == 0">
+                    Нет данных об образовании.
+                </p>
+
+                <!-- Форма добавления нового образования -->
+                <div class="border-top pt-3 mt-3">
+                    <h6>Добавить новое образование</h6>
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <input type="number" name="yearStart" class="form-control" placeholder="Год начала" required/>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" name="yearEnd" class="form-control" placeholder="Год окончания" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" name="nameEducation" class="form-control" placeholder="Университет" required/>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" name="degree" class="form-control" placeholder="Диплом" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-success btn-lg">Сохранить</button>
+                <a th:href="@{/resumes}" class="btn btn-secondary btn-lg">Отменить</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JS Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

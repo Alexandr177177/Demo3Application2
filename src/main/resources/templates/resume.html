@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume</title>
+    <link rel="stylesheet" th:href="@{/css/styleIndex.css}">
+</head>
+<body>
+
+<header class="header">
+    <h1 th:text="${employee.name}">John Doe</h1>
+    <h2>Java Developer</h2>
+    <h3>Remotely or hybrid from Brest, Belarus</h3>
+
+    <div class="photo-container">
+        <img th:if="${employee.image != null and employee.image != ''}"
+             th:src="@{${employee.image}}"
+             alt="Employee Photo"
+             style="width: 200px; height: auto; border-radius: 10px;">
+        <p th:if="${employee.image == null or employee.image == ''}" class="no-photo">
+            Фото не загружено
+        </p>
+    </div>
+
+    <nav class="navigation">
+        <a href="#summary">Summary</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#education">Education</a>
+    </nav>
+</header>
+
+<main class="main-container">
+    <!-- Summary Section -->
+    <section id="summary" class="resume-section">
+        <h2>Summary</h2>
+        <div class="summary-content">
+            <ul>
+                <li><strong>ID:</strong> <span th:text="${employee.id}">123</span></li>
+                <li><strong>Name:</strong> <span th:text="${employee.name}">John Doe</span></li>
+                <li><strong>Phone:</strong> <span th:text="${employee.telephon}">+375 (29) 123-45-67</span></li>
+                <li><strong>Email:</strong> <span th:text="${employee.mail}">john@example.com</span></li>
+            </ul>
+        </div>
+        <p>
+            I am a Java developer from Brest, Belarus. Looking for remote or hybrid work opportunities in Java development.
+        </p>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="resume-section">
+        <h2>Experience</h2>
+        <div class="experience-item">
+            <h3>Car Leasing Project</h3>
+            <p><strong>Description:</strong> Microservice desktop application.</p>
+            <p><strong>Tasks:</strong></p>
+            <ul>
+                <li>Working with multithreading</li>
+                <li>Working with message brokers (RabbitMQ)</li>
+                <li>Writing JUnit and integration tests (parameterized tests, Mockito, TestContainers)</li>
+                <li>Working on SCRUM methodology in a team of 3 people</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="resume-section">
+        <h2>Skills</h2>
+        <ul class="skills-list">
+            <li>Java</li>
+            <li>Docker</li>
+            <li>HTML</li>
+            <li>Git</li>
+        </ul>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="resume-section">
+        <h2>Education</h2>
+        <p>
+            2001–2007 — Прошёл курсы по Java, закончил технический университет.
+        </p>
+    </section>
+    <!-- Кнопка выхода в основное меню -->
+    <div class="mt-4 text-center">
+        <a th:href="@{/resumes}" class="btn btn-outline-secondary btn-lg">
+            🔙 Вернуться к списку резюме
+        </a>
+    </div>
+</main>
+
+</body>
+</html>
