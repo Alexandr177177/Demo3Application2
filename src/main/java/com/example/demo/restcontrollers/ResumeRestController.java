@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.restcontrollers;
 
 import com.example.demo.SpringDataRepository.EmployeeRepository;
 import com.example.demo.model.Employee;
