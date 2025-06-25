@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProgectServices {
@@ -16,14 +17,15 @@ public class ProgectServices {
     private final ProjectMapper mapper;
 
 
-    public ProjectDto getProgectById (Integer id){
+    public ProjectDto getProjectById (Integer id){
         Project project = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found"));
         return mapper.toDto(project);
     }
-    public List<ProjectDto> getAllProgect(){
+    public List<ProjectDto> getAllProject(){
         List<Project> projects = repository.findAll();
         projects.forEach(System.out::println);
         return mapper.toDto(projects);
+
     }
 }
