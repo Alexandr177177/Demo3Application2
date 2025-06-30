@@ -1,6 +1,7 @@
 package com.example.demo.restcontrollers;
-
+import com.example.demo.dto.EmployeeDto;
 import com.example.demo.dto.ProjectDto;
+import com.example.demo.services.EmployeeService;
 import com.example.demo.services.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -14,28 +15,28 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/projects")
-public class ProjectController {
+@RequestMapping("/employees")
+public class EmployeeController {
 
-    private final ProjectService service;
+    private final EmployeeService service;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDto> getProjectById(@PathVariable Integer id) {
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Integer id) {
         try {
-            ProjectDto project = service.getProjectById(id);
-            return ResponseEntity.ok(project);
+            EmployeeDto employee = service.getEmployeeById(id);
+            return ResponseEntity.ok(employee);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDto>> getAllProject() {
-        List<ProjectDto> projects = service.getAllProject();
-        if (projects.isEmpty()) {
+    public ResponseEntity<List<EmployeeDto>> getAllEmployee() {
+        List<EmployeeDto> employee = service.getAllEmployee();
+        if (employee.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.ok(projects);
+            return ResponseEntity.ok(employee);
         }
 
     }
