@@ -15,11 +15,14 @@ public class SwaggerConfig {
         return new OpenAPI().
                 servers(
                         List.of(
-                                new Server().url("http://localhost^8080")
+                                new Server().url("http://localhost:8080")
                         )
                 )
                 .info(
-                        new Info().title("API Resume").version("1.0")
+                        new Info()
+                                .title("API Resume")
+                                .description("Документация для REST API проекта Resume")
+                                .version("1.0")
                 );
     }
 }

@@ -1,10 +1,16 @@
 package com.example.demo.services;
 
+import com.example.demo.HibernateRepositoryImpl;
+import com.example.demo.SpringDataRepository.EmployeeRepository;
 import com.example.demo.dto.ProjectDto;
 import com.example.demo.mappers.ProjectMapper;
+import com.example.demo.model.Employee;
 import com.example.demo.model.Project;
+import com.example.demo.repository.EmployeeJPARepository;
 import com.example.demo.repository.ProjectRepository;
+import com.example.demo.request.CreateProjectRequest;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +21,7 @@ import java.util.List;
 public class ProjectService {
     private  final ProjectRepository repository;
     private final ProjectMapper mapper;
+    private final EmployeeJPARepository employeeRepository;
 
 
     public ProjectDto getProjectById (Integer id){
@@ -28,4 +35,20 @@ public class ProjectService {
         return mapper.toDto(projects);
 
     }
+
+    @Transactional
+    public ProjectDto createProject(CreateProjectRequest request){
+        Employee employee= employeeRepository.findById(request.getEmployeeId())
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+                Project project = Project.builder()
+                        .name(request.getName())
+                        .description(request.getDescription())
+                        .employee(employee)
+                        .build();
+             var saved=repository.save(project);
+        return mapper.toDto(saved);
+
+    }
+
+
 }

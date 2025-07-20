@@ -2,6 +2,8 @@ package com.example.demo.restcontrollers;
 
 import com.example.demo.SpringDataRepository.EmployeeRepository;
 import com.example.demo.model.Employee;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+@Tag(name = "Проекты")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/rest")
@@ -23,6 +25,9 @@ public class ResumeRestController {
             return repository.findById(id).get();
     }
 */
+    @Operation(summary = "Получить имя по иднетификвтору",
+    description = "Достает из базы данных и преобразует в ДТО данные об employee")
+
     @GetMapping
     public List<Employee> getResumes() {
         return repository.findAll();
@@ -33,4 +38,5 @@ public class ResumeRestController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build()).getBody();
     }
+
 }
