@@ -21,6 +21,7 @@ public class EmployeeController {
 
     private final EmployeeService service;
 
+
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Integer id) {
         try {
