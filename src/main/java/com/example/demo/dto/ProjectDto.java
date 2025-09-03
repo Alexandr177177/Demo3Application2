@@ -2,11 +2,11 @@ package com.example.demo.dto;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Schema(description = "Информация о проекте")
 public class ProjectDto {
     @Schema(description = "Уникальный идентификатор проекта", example = "101")

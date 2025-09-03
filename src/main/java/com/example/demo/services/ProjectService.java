@@ -1,7 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.HibernateRepositoryImpl;
-import com.example.demo.SpringDataRepository.EmployeeRepository;
 import com.example.demo.dto.ProjectDto;
 import com.example.demo.mappers.ProjectMapper;
 import com.example.demo.model.Employee;

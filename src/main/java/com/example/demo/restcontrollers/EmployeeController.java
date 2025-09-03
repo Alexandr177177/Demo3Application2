@@ -1,26 +1,17 @@
 package com.example.demo.restcontrollers;
 
 import com.example.demo.dto.EmployeeDto;
-import com.example.demo.dto.ProjectDto;
-import com.example.demo.model.Employee;
 import com.example.demo.request.MailRequest;
 import com.example.demo.services.EmployeeService;
+import com.example.demo.services.FileService;
 import com.example.demo.services.MailSenderService;
-import com.example.demo.services.ProjectService;
+import com.example.demo.services.rabbitMQ.EmployeeAmqpProducerService;
+import com.example.demo.services.rabbitMQ.ProjectAmqpProducerService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.Optional;
-
-import static com.example.demo.model.FormatFiles.DOCX;
-import static com.example.demo.model.FormatFiles.XLSX;
-import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
-import static org.hibernate.Hibernate.map;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +19,8 @@ import static org.hibernate.Hibernate.map;
 public class EmployeeController {
     private final MailSenderService mailSender;
     private final EmployeeService service;
+    private final FileService fileService;
+    private final EmployeeAmqpProducerService amqpProducerService;
 
 
     @GetMapping("/{id}")
@@ -61,27 +54,28 @@ public class EmployeeController {
         }
     }
 
-    @PostMapping("/{id}/xls")
-    public ResponseEntity<String> createXLSFile(@PathVariable Integer id) {
-        EmployeeDto employee = service.getEmployeeById(id);
-        if (employee != null) {
-            mailSender.createXLSFile(employee);
-            return ResponseEntity.ok("File " + employee.getId() + " created");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("/{id}/doc")
-    public ResponseEntity<String> createDocFile(@PathVariable Integer id) {
-        EmployeeDto employee = service.getEmployeeById(id);
-        if (employee != null) {
-            mailSender.createDOCFile(employee);
-            return ResponseEntity.ok("File " + employee.getId() + " created");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @PostMapping("/{id}/xls")
+//    public ResponseEntity<String> createXLSFile(@PathVariable Integer id) {
+//        EmployeeDto employee = service.getEmployeeById(id);
+//
+//        if (employee != null) {
+//            mailSender.createXLSFile(employee);
+//            return ResponseEntity.ok("File " + employee.getId() + " created");
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+//    @PostMapping("/{id}/doc")
+//    public ResponseEntity<String> createDocFile(@PathVariable Integer id) {
+//        EmployeeDto employee = service.getEmployeeById(id);
+//        if (employee != null) {
+//            mailSender.createDOCFile(employee);
+//            return ResponseEntity.ok("File " + employee.getId() + " created");
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+ //   }
 
     @PostMapping("/{id}/attachmentMail")
     public ResponseEntity<String> sendEmailWithAttachment(
@@ -89,18 +83,22 @@ public class EmployeeController {
             @RequestBody @Valid MailRequest mailRequest
     ) {
         EmployeeDto employee = service.getEmployeeById(id);
-        String fileName = switch (mailRequest.getFormatFile()) {
-            case DOCX -> mailSender.createDOCFile(employee);
-            case XLSX -> mailSender.createXLSFile(employee);
-        };
-            //String path = mailSender.createDOCFile(employee);
-            mailSender.sendMailWithAttachment(
-                    mailRequest.getMailAddress(),
-                    "resume of " + employee.getName(),
-                    "Вы можите ознакомиться с содержанием письма",
-                    fileName
-            );
-            return ResponseEntity.ok("Email had sent to " + employee.getName());
+        mailSender.sendMailWithAttachment(
+                mailRequest.getMailAddress(),
+                "resume of " + employee.getName(),
+                "Вы можите ознакомиться с содержанием письма",
+                fileService.createFile(employee, mailRequest.getFormatFile())
+        );
+        return ResponseEntity.ok("Email had sent to " + employee.getName());
+    }
+
+    @PostMapping ("/{id}/rabbit-email")
+    public ResponseEntity<String> sendEmailToRabbit(
+            @PathVariable Integer id
+    ){
+        EmployeeDto employee = service.getEmployeeById(id);
+        amqpProducerService.sendMessage(employee);
+        return ResponseEntity.ok("Email about " + employee.getName());
     }
 }
 
