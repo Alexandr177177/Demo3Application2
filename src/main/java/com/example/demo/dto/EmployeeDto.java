@@ -1,11 +1,13 @@
 package com.example.demo.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @Schema(description = "Информация о сотруднике")
 public class EmployeeDto {
     @Schema(description = "Уникальный идентификатор сотрудника", example = "1")
