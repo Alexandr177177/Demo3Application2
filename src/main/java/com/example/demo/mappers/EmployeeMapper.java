@@ -1,7 +1,7 @@
 package com.example.demo.mappers;
 
 import com.example.demo.dto.EmployeeDto;
-import com.example.demo.model.Employee;
+import com.example.demo.model.primary.Employee;
 import org.mapstruct.Mapper;
 
 import java.util.List;

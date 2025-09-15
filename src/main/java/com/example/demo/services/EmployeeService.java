@@ -1,9 +1,9 @@
 package com.example.demo.services;
 import com.example.demo.dto.EmployeeDto;
 import com.example.demo.mappers.EmployeeMapper;
-import com.example.demo.model.Employee;
+import com.example.demo.model.primary.Employee;
 
-import com.example.demo.repository.EmployeeJPARepository;
+import com.example.demo.repository.primary.EmployeeJPARepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

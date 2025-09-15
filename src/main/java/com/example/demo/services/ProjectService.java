@@ -2,10 +2,10 @@ package com.example.demo.services;
 
 import com.example.demo.dto.ProjectDto;
 import com.example.demo.mappers.ProjectMapper;
-import com.example.demo.model.Employee;
-import com.example.demo.model.Project;
-import com.example.demo.repository.EmployeeJPARepository;
-import com.example.demo.repository.ProjectRepository;
+import com.example.demo.model.primary.Employee;
+import com.example.demo.model.primary.Project;
+import com.example.demo.repository.primary.EmployeeJPARepository;
+import com.example.demo.repository.primary.ProjectRepository;
 import com.example.demo.request.CreateProjectRequest;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;

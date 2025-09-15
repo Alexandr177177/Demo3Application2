@@ -1,9 +1,9 @@
 package com.example.demo;
 
-import com.example.demo.model.Employee;
-import com.example.demo.model.Education;
-import com.example.demo.model.EnglishLevel;
-import com.example.demo.model.Skill;
+import com.example.demo.model.primary.Employee;
+import com.example.demo.model.primary.Education;
+import com.example.demo.model.primary.EnglishLevel;
+import com.example.demo.model.primary.Skill;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -3,7 +3,7 @@ package com.example.demo.services.rabbitMQ;
 
 import com.example.demo.config.RabbitConfig;
 import com.example.demo.dto.EmployeeDto;
-import com.example.demo.model.FormatFiles;
+import com.example.demo.model.primary.FormatFiles;
 import com.example.demo.services.FileService;
 import com.example.demo.services.MailSenderService;
 import lombok.AllArgsConstructor;

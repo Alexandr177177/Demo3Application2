@@ -1,85 +1,68 @@
 package com.example.demo;
 
-import com.example.demo.model.Education;
-import com.example.demo.model.Employee;
-import com.example.demo.model.Project;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
+import com.example.demo.model.primary.Education;
+import com.example.demo.model.primary.Employee;
+import com.example.demo.model.primary.Project;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 @Primary
 public class HibernateRepositoryImpl implements RepositoryPort {
 
-    private final SessionFactory sessionFactory;
-
-
-    public HibernateRepositoryImpl() {
-        this.sessionFactory = new Configuration()
-                .configure()
-                .addAnnotatedClass(Employee.class)
-                .addAnnotatedClass(Education.class)
-                .addAnnotatedClass(Project.class)
-                .buildSessionFactory();
-    }
-
-
-
-
-
-
-
-
-
-
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Employee> findAll() {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Employee> query = session.createQuery("FROM Employee", Employee.class); // Запрос на получение всех записей
-            return query.list();
-        }
+        String jpql = "SELECT e FROM Employee e";
+        TypedQuery<Employee> query = entityManager.createQuery(jpql, Employee.class);
+        return query.getResultList();
     }
 
-
     @Override
+    @Transactional(readOnly = true)
     public Optional<Employee> findById(Integer id) {
-        try (Session session = sessionFactory.openSession()) {
-            String hql = "FROM Employee e LEFT JOIN FETCH e.education LEFT JOIN FETCH e.project WHERE e.id = :id";
-            Query<Employee> query = session.createQuery(hql, Employee.class);
-            query.setParameter("id", id);
-            return Optional.ofNullable(query.uniqueResult());
+        String jpql = "SELECT e FROM Employee e LEFT JOIN FETCH e.education LEFT JOIN FETCH e.project WHERE e.id = :id";
+        TypedQuery<Employee> query = entityManager.createQuery(jpql, Employee.class);
+        query.setParameter("id", id);
+
+        try {
+            Employee employee = query.getSingleResult();
+            return Optional.of(employee);
+        } catch (Exception e) {
+            return Optional.empty();
         }
     }
 
     @Override
+    @Transactional
     public Employee save(Employee employee) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction(); // Начинаем транзакцию
-            session.merge(employee); // Сохраняем или обновляем запись
-            transaction.commit(); // Завершаем транзакцию
+        if (employee.getId() == null) {
+            entityManager.persist(employee);
             return employee;
+        } else {
+            return entityManager.merge(employee);
         }
     }
 
     @Override
+    @Transactional
     public void deleteById(Integer id) {
-        try (Session session = sessionFactory.openSession()) {
-            System.out.println("    Delete     " );
-            session.beginTransaction();
-            Employee employee = session.get(Employee.class, id); // Находим запись по ID
-            if (employee != null) {
-                session.remove(employee); // Удаляем запись
-            }
-            session.getTransaction().commit();
+        Employee employee = entityManager.find(Employee.class, id);
+        if (employee != null) {
+            entityManager.remove(employee);
         }
     }
+
+
 }

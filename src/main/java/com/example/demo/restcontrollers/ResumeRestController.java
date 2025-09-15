@@ -1,7 +1,7 @@
 package com.example.demo.restcontrollers;
 
-import com.example.demo.SpringDataRepository.EmployeeRepository;
-import com.example.demo.model.Employee;
+import com.example.demo.repository.primary.EmployeeRepository;
+import com.example.demo.model.primary.Employee;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;

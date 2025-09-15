@@ -1,5 +1,9 @@
-package com.example.demo.model;
+package com.example.demo.model.primary;
 
+import com.example.demo.model.primary.Education;
+import com.example.demo.model.primary.EnglishLevel;
+import com.example.demo.model.primary.Project;
+import com.example.demo.model.primary.Skill;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,0 +1,13 @@
+POST http://localhost:8081/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=admin-cli
+    &grant_type=password
+    &username=admin
+    &password=12345
+    &scope=openid
+
+> {%
+    client.global.set("keycloak_admin_token_with_openid", response.body.access_token);
+    client.log("Keycloak admin token получен");
+%}

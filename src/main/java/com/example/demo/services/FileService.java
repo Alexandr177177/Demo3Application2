@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.EmployeeDto;
-import com.example.demo.model.FormatFiles;
+import com.example.demo.model.primary.FormatFiles;
 import com.example.demo.services.fileFabrica.FileGenerateFactory;
 import com.example.demo.services.fileFabrica.FileGenerator;
 import org.springframework.stereotype.Service;
