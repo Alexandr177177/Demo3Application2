@@ -7,7 +7,37 @@ client_id=admin-cli
     &password=12345
     &scope=openid
 
+
 > {%
     client.global.set("keycloak_admin_token_with_openid", response.body.access_token);
     client.log("Keycloak admin token получен");
 %}
+
+
+###
+POST http://localhost:8081/realms/resume-realm/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=resume&username=admin&password=12345&client_secret=yTFAL0CTounx5zj7PiAiiZTPEp1vajH8&grant_type=password&scope=openid profile email
+
+> {% client.global.set("auth_token", response.body.access_token); %}
+
+
+### Get all promo codes with token
+GET http://localhost:8000/promo-cod
+Authorization: Bearer {{auth_token}}
+Accept: application/json
+
+### Получение информации о user
+GET http://localhost:8081/realms/resume-realm/protocol/openid-connect/userinfo
+Authorization: Bearer {{auth_token}}
+
+
+###  Auth and get token
+POST http://localhost:8081/realms/resume-realm/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=resume&username=user&password=12345&client_secret=AvAYzGmNXtqYSiWdHmhk1wfvPjIDQxpq2&grant_type=password&scope=openid profile email
+
+> {% client.global.set("auth_token", response.body.access_token); %}
+
